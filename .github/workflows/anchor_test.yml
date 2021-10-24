@@ -33,6 +33,8 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: cargo-${{ runner.os }}-v0000-${{ hashFiles('**/Cargo.lock') }}
+      - name: set solana PATH
+        run: echo "/home/runner/.local/share/solana/install/active_release/bin:$PATH" >> $GITHUB_PATH
       - uses: actions/cache@v2
         name: Cache Solana Tool Suite
         id: cache-solana
@@ -60,7 +62,6 @@ jobs:
           sh -c "$(curl -sSfL https://release.solana.com/v${{ env.solana_verion }}/install)"
       - name: setup solana
         run: |
-          echo "/home/runner/.local/share/solana/install/active_release/bin:$PATH" >> $GITHUB_PATH
           solana --version
           solana-keygen new
       - run: yarn install
